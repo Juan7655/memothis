@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MemoThis</string>
+    <string name="practice_text">Practicar</string>
+    <string name="answer_hint">Ingresa tu respuesta</string>
+    <string name="no_term_text">No hay concepto pendiente</string>
+    <string name="submit_text">Submit</string>
+    <string name="result_text">Resultado</string>
+</resources>
