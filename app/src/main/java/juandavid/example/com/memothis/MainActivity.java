@@ -3,6 +3,7 @@ package juandavid.example.com.memothis;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,13 @@ public class MainActivity extends AppCompatActivity {
 
 	@SuppressWarnings("FieldCanBeLocal")
 	private final String ITEM_VALUE = "ITEM_VALUE";
+	private TextView textView;
+	private Button button;
+	private EditText editText;
+	private ItemList list = ItemList.getInstance();
+	private ForeGroundMessage foreGroundMessage = new ForeGroundMessage(this);
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,18 +33,23 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-		final TextView textView = (TextView) findViewById(R.id.tv);
-		final EditText editText = (EditText) findViewById(R.id.edit_text);
-		final Button button = (Button) findViewById(R.id.submit_button);
+		textView = (TextView) findViewById(R.id.tv);
+		button = (Button) findViewById(R.id.submit_button);
+		editText = (EditText) findViewById(R.id.edit_text);
 
-		final ItemList list = ItemList.getInstance();
+
 		String msg = getIntent().getStringExtra(ITEM_VALUE);
 		final int itemId = Integer.parseInt(msg == null ? "-1" : msg) % list.size();
-		if (itemId == -1) {
+		setEnabled(itemId == -1, itemId);
+
+	}
+
+	public void setEnabled(boolean state, final int itemId){
+		if(state){
 			editText.setText(" ");
 			editText.setEnabled(false);
 			button.setEnabled(false);
-		} else {
+		}else{
 			textView.setText(list.getName(itemId));
 			editText.setEnabled(true);
 			editText.setText("");
