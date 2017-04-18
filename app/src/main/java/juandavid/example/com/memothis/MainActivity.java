@@ -1,5 +1,6 @@
 package juandavid.example.com.memothis;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//TODO agregar acá actividad para practicar
+				startActivity(new Intent(getBaseContext(), PracticeActivity.class));
 			}
 		});
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
 		final ItemList list = ItemList.getInstance();
 		String msg = getIntent().getStringExtra(ITEM_VALUE);
-		final int itemId = Integer.parseInt(msg==null?"-1":msg) % list.size();
+		final int itemId = Integer.parseInt(msg == null ? "-1" : msg) % list.size();
 		if (itemId == -1) {
 			editText.setText(" ");
 			editText.setEnabled(false);

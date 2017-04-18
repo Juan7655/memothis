@@ -51,4 +51,14 @@ public final class ItemList {
 	public int size(){
 		return ITEMS_NAME.size();
 	}
+
+	public String[] getNameList(){
+		String[] array = new String[ITEMS_NAME.size()];
+
+		for (int i = 0; i <ITEMS_NAME.size(); i++) {
+				array[i] = ITEMS_NAME.get(i);
+		}
+
+		return array;
+	}
 }
