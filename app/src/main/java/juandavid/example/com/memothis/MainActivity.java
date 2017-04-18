@@ -3,7 +3,6 @@ package juandavid.example.com.memothis;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +16,6 @@ public class MainActivity extends AppCompatActivity {
 	private Button button;
 	private EditText editText;
 	private ItemList list = ItemList.getInstance();
-	private ForeGroundMessage foreGroundMessage = new ForeGroundMessage(this);
-
 
 
 	@Override
@@ -41,19 +38,15 @@ public class MainActivity extends AppCompatActivity {
 		String msg = getIntent().getStringExtra(ITEM_VALUE);
 		final int itemId = Integer.parseInt(msg == null ? "-1" : msg) % list.size();
 		setEnabled(itemId == -1, itemId);
-
 	}
 
-	public void setEnabled(boolean state, final int itemId){
-		if(state){
-			editText.setText(" ");
-			editText.setEnabled(false);
-			button.setEnabled(false);
-		}else{
+	public void setEnabled(boolean state, final int itemId) {
+		editText.setEnabled(!state);
+		button.setEnabled(!state);
+		editText.setText(state ? " " : "");
+
+		if (!state) {
 			textView.setText(list.getName(itemId));
-			editText.setEnabled(true);
-			editText.setText("");
-			button.setEnabled(true);
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

@@ -6,7 +6,7 @@ import android.util.SparseArray;
  * Created by juandavid on 16/04/17.
  */
 
-public final class ItemList {
+final class ItemList {
 	private final SparseArray<String> ITEMS_NAME = new SparseArray<>();
 	private final SparseArray<String> ITEMS_DEFINITION = new SparseArray<>();
 	private static ItemList instance = new ItemList();
@@ -18,46 +18,33 @@ public final class ItemList {
 		}
 	}
 
-	public static ItemList getInstance(){
+	static ItemList getInstance(){
 		return instance;
 	}
 
-	public boolean hasItem(String name){
-		for (int i = 0; i < ITEMS_NAME.size(); i++) {
-			if(name.equals(ITEMS_NAME.get(i))) return true;
-		}
-		return false;
-	}
-
-	public String getName(int id){
+	String getName(int id){
 		id %= ITEMS_NAME.size();
 		return ITEMS_NAME.get(id);
 	}
 
+	@SuppressWarnings("unused")
 	public String getDefinition(int id){
 		id %= ITEMS_NAME.size();
 		return ITEMS_DEFINITION.get(id);
 	}
 
-	public void addItem(String name, String definition){
-		ITEMS_NAME.put(ITEMS_NAME.size(), name);
-		ITEMS_DEFINITION.put(ITEMS_DEFINITION.size(), definition);
-	}
-
-	public boolean isDefinition(int id, String expected){
+	boolean isDefinition(int id, String expected){
 		return ITEMS_DEFINITION.get(id).equals(expected);
 	}
 
-	public int size(){
+	int size(){
 		return ITEMS_NAME.size();
 	}
 
-	public String[] getNameList(){
+	String[] getNameList(){
 		String[] array = new String[ITEMS_NAME.size()];
 
-		for (int i = 0; i <ITEMS_NAME.size(); i++) {
-				array[i] = ITEMS_NAME.get(i);
-		}
+		for (int i = 0; i <ITEMS_NAME.size(); i++) array[i] = ITEMS_NAME.get(i);
 
 		return array;
 	}

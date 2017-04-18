@@ -2,7 +2,6 @@ package juandavid.example.com.memothis;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -13,13 +12,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class ForeGroundMessage extends FirebaseMessagingService {
 
-	private static final String TAG = "tagtag";
+	@SuppressWarnings("FieldCanBeLocal")
 	private final String ITEM_VALUE = "ITEM_VALUE";
 	private Context context;
-
-	public ForeGroundMessage(){
-		context = getBaseContext();
-	}
 
 	public ForeGroundMessage(Context context) {
 		this.context = context;
@@ -27,11 +22,6 @@ public class ForeGroundMessage extends FirebaseMessagingService {
 
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
-		Log.i(TAG, "From: " + remoteMessage.getFrom());
-
-		// Check if message contains a data payload.
-		if (remoteMessage.getData().size() > 0)
-			Log.i(TAG, "Message data payload: " + remoteMessage.getData());
 		String msg = remoteMessage.getData().get(ITEM_VALUE);
 		final int itemId = Integer.parseInt(msg == null ? "-1" : msg) % ItemList.getInstance().size();
 
