@@ -4,9 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 	private Button button;
 	private EditText editText;
 	private ItemList list = ItemList.getInstance();
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +43,23 @@ public class MainActivity extends AppCompatActivity {
 		button = (Button) findViewById(R.id.submit_button);
 		editText = (EditText) findViewById(R.id.edit_text);
 
-
+		attachFirebaseDatabase();
 		String msg = getIntent().getStringExtra(ITEM_VALUE);
-		final int itemId = Integer.parseInt(msg == null ? "-1" : msg) % list.size();
-		setEnabled(itemId == -1, itemId);
+		final int itemId = msg == null ? -1 : Integer.parseInt(msg) % list.size();
+		setEnabled(itemId != -1, itemId);
 	}
 
 	public void setEnabled(boolean state, final int itemId) {
-		editText.setEnabled(!state);
-		button.setEnabled(!state);
-		editText.setText(state ? " " : "");
+		editText.setEnabled(state);
+		button.setEnabled(state);
+		editText.setText(state ? "" : " ");
 
-		if (!state) {
+		if (state) {
 			textView.setText(list.getName(itemId));
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					//Configuration of the Views
 					findViewById(R.id.image).setBackgroundResource(
 							list.isDefinition(itemId, editText.getText().toString()) ?
 									R.drawable.ic_check_black_24dp : R.drawable.ic_clear_black_24dp);
@@ -58,5 +68,29 @@ public class MainActivity extends AppCompatActivity {
 				}
 			});
 		}
+	}
+
+	private void attachFirebaseDatabase() {
+		DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("ItemList");
+
+		myRef.setValue(ItemList.getInstance().getNameList());
+		myRef.addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				@SuppressWarnings("unchecked") List<String> list = (List<String>) dataSnapshot.getValue();
+				ItemList.getInstance().setNameList(list);
+				ArrayAdapter<String> adapt = WordListFragment.adapter;
+				if (adapt != null) {
+					adapt.clear();
+					adapt.addAll(ItemList.getInstance().getNameList());
+				}
+				Toast.makeText(getApplicationContext(),
+						"Wordbank updated", Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onCancelled(DatabaseError databaseError) {
+			}
+		});
 	}
 }

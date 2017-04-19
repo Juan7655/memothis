@@ -20,6 +20,7 @@ import java.util.Arrays;
 public class WordListFragment extends Fragment {
 
 	private OnItemWordListener mListener;
+	public static ArrayAdapter<String> adapter;
 
 	public WordListFragment() {
 	}
@@ -29,9 +30,9 @@ public class WordListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_practice, container, false);
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+		adapter = new ArrayAdapter<>(getActivity(),
 				R.layout.list_item_practice, R.id.list_item_practice_textview,
-				new ArrayList<>(Arrays.asList(ItemList.getInstance().getNameList())));
+				new ArrayList<>(Arrays.asList(ItemList.getInstance().getNameArray())));
 
 		ListView lv = (ListView) rootView.findViewById(R.id.listview_practice);
 		lv.setAdapter(adapter);
