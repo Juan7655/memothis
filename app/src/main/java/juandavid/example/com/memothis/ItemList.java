@@ -15,10 +15,6 @@ final class ItemList {
 	private static ItemList instance = new ItemList();
 
 	private ItemList() {
-		for (int i = 0; i < 10; i++) {
-			ITEMS_NAME.put(i, "ITEM"+i);
-			ITEMS_DEFINITION.put(i, "DEF"+i);
-		}
 	}
 
 	static ItemList getInstance(){
@@ -63,8 +59,10 @@ final class ItemList {
 
 	void setNameList(List<String> array){
 		ITEMS_NAME.clear();
+		ITEMS_DEFINITION.clear();
 		for (int i = 0; i < array.size(); i++) {
 			ITEMS_NAME.put(i, array.get(i));
+			ITEMS_DEFINITION.put(i, "def" + i);
 		}
 	}
 }

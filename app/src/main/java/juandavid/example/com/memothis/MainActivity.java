@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 	private void attachFirebaseDatabase() {
 		DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("ItemList");
 
-		myRef.setValue(ItemList.getInstance().getNameList());
 		myRef.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
@@ -84,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
 					adapt.clear();
 					adapt.addAll(ItemList.getInstance().getNameList());
 				}
-				Toast.makeText(getApplicationContext(),
-						"Wordbank updated", Toast.LENGTH_LONG).show();
 			}
 
 			@Override
