@@ -20,7 +20,7 @@
         </activity>
 
         <service
-            android:name=".ForeGroundMessage">
+            android:name=".database.ForeGroundMessage">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

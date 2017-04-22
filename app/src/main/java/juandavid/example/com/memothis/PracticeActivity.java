@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import juandavid.example.com.memothis.database.ItemList;
+
 public class PracticeActivity extends AppCompatActivity implements WordListFragment.OnItemWordListener{
 
 	@Override
@@ -15,6 +17,6 @@ public class PracticeActivity extends AppCompatActivity implements WordListFragm
 
 	@Override
 	public void OnItemWordInteraction(int item) {
-		Toast.makeText(this, "Item click: " + item, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Item click: " + ItemList.getInstance().getDefinition(item), Toast.LENGTH_SHORT).show();
 	}
 }

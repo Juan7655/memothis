@@ -1,9 +1,11 @@
-package juandavid.example.com.memothis;
+package juandavid.example.com.memothis.database;
 
 import android.content.Intent;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import juandavid.example.com.memothis.MainActivity;
 
 /**
  * Created by juandavid on 17/04/17.

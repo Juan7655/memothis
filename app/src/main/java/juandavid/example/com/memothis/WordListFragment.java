@@ -13,6 +13,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import juandavid.example.com.memothis.database.ItemList;
+
 /**
  * Created by juandavid on 17/04/17.
  */
