@@ -3,6 +3,7 @@ package juandavid.example.com.memothis;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Date;
 
 import juandavid.example.com.memothis.database.ItemList;
 import juandavid.example.com.memothis.database.MyValueEventListener;
@@ -56,11 +59,15 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View v) {
 					//Configuration of the Views
+					boolean result = list.isDefinition(itemId, editText.getText().toString());
 					findViewById(R.id.image).setBackgroundResource(
-							list.isDefinition(itemId, editText.getText().toString()) ?
-									R.drawable.ic_check_black_24dp : R.drawable.ic_clear_black_24dp);
+							result ? R.drawable.ic_check_black_24dp : R.drawable.ic_clear_black_24dp);
 					editText.setEnabled(false);
 					button.setEnabled(false);
+
+					DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("User1");
+					CharSequence s  = DateFormat.format("d-MM-yy", new Date().getTime() + 1);
+					myRef.child(s.toString()).setValue(new ItemResult(itemId, result));
 				}
 			});
 		}
@@ -68,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private void attachFirebaseDatabase() {
 		DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("ItemList");
-
 		myRef.addValueEventListener(new MyValueEventListener());
 	}
 }

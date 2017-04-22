@@ -47,7 +47,7 @@ public final class ItemList {
 		return array;
 	}
 
-	public List<String> getNameList() {
+	List<String> getNameList() {
 		ArrayList<String> array = new ArrayList<>();
 
 		for (int i = 0; i < ITEMS_NAME.size(); i++) {
@@ -56,7 +56,7 @@ public final class ItemList {
 		return array;
 	}
 
-	public void setVocabularyList(List<String> names, List<String> definitions) {
+	void setVocabularyList(List<String> names, List<String> definitions) {
 		if (names.size() != definitions.size())
 			throw new IndexOutOfBoundsException("Definitions array size must correspond to Names array");
 		ITEMS_NAME.clear();
