@@ -34,7 +34,7 @@ public class WordListFragment extends Fragment {
 
 		adapter = new ArrayAdapter<>(getActivity(),
 				R.layout.list_item_practice, R.id.list_item_practice_textview,
-				new ArrayList<>(Arrays.asList(ItemList.getInstance().getNameArray())));
+				new ArrayList<>(Arrays.asList(ItemList.getInstance().getNameArray(getActivity()))));
 
 		ListView lv = (ListView) rootView.findViewById(R.id.listview_practice);
 		lv.setAdapter(adapter);

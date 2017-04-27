@@ -1,5 +1,6 @@
 package juandavid.example.com.memothis.database;
 
+import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +20,11 @@ public class MyValueEventListener implements ValueEventListener {
 	@SuppressWarnings("FieldCanBeLocal")
 	private final String NAME_TAG = "NameList",
 			DEFINITION_TAG = "DefinitionList";
+	private Context mContext;
+
+	public MyValueEventListener(Context context){
+		mContext = context;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -31,12 +37,13 @@ public class MyValueEventListener implements ValueEventListener {
 			return;
 		}
 
-		if (nameList.size() != definitionList.size()) return;
-		ItemList.getInstance().setVocabularyList(nameList, definitionList);
+		int size = definitionList.size();
+		if (nameList.size() != size) return;
+		ItemList.getInstance().setVocabularyList(mContext, nameList, definitionList);
 		ArrayAdapter<String> adapt = WordListFragment.adapter;
 		if (adapt != null) {
 			adapt.clear();
-			adapt.addAll(ItemList.getInstance().getNameList());
+			adapt.addAll(ItemList.getInstance().getNameList(mContext));
 		}
 	}
 

@@ -1,9 +1,14 @@
 package juandavid.example.com.memothis.database;
 
-import android.util.SparseArray;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import juandavid.example.com.memothis.database.DatabaseContract.FeedEntry;
 
 /**
  * Created by juandavid on 16/04/17.
@@ -11,8 +16,6 @@ import java.util.List;
 
 public final class ItemList {
 	private static ItemList instance = new ItemList();
-	private final SparseArray<String> ITEMS_NAME = new SparseArray<>();
-	private final SparseArray<String> ITEMS_DEFINITION = new SparseArray<>();
 
 	private ItemList() {
 	}
@@ -21,54 +24,93 @@ public final class ItemList {
 		return instance;
 	}
 
-	public String getName(int id) {
-		id %= ITEMS_NAME.size();
-		return ITEMS_NAME.get(id);
+	public String getName(Context context, int id) {
+		SQLiteDatabase db = (new DatabaseHelper(context)).getReadableDatabase();
+
+		Cursor c = db.query(FeedEntry.TABLE_NAME, new String[]{FeedEntry.COLUMN_ANSWER},
+				FeedEntry._ID + " = " + id, null, null, null, FeedEntry._ID + " ASC", "1");
+		c.moveToFirst();
+		String val = c.getString(0);
+		c.close();
+
+		return val;
 	}
 
-	public String getDefinition(int id) {
-		id %= ITEMS_NAME.size();
-		return ITEMS_DEFINITION.get(id);
+	public String getDefinition(Context context, int id) {
+		SQLiteDatabase db = (new DatabaseHelper(context)).getReadableDatabase();
+
+		Cursor c = db.query(FeedEntry.TABLE_NAME, new String[]{FeedEntry.COLUMN_ANSWER},
+				FeedEntry._ID + " = " + id, null, null, null, FeedEntry._ID + " ASC", "1");
+		c.moveToFirst();
+		String val = c.getString(0);
+		c.close();
+
+		return val;
 	}
 
-	public boolean isDefinition(int id, String expected) {
-		return ITEMS_DEFINITION.get(id % ITEMS_DEFINITION.size()).equals(expected);
+	public boolean isDefinition(Context context, int id, String expected) {
+		return getDefinition(context, id).equals(expected);
 	}
 
-	public int size() {
-		return ITEMS_NAME.size();
+	public int size(Context context) {
+		SQLiteDatabase db = (new DatabaseHelper(context)).getReadableDatabase();
+
+		Cursor c = db.query(FeedEntry.TABLE_NAME,
+				new String[]{"COUNT(" + FeedEntry._ID + ")"},
+				null, null, null, null, FeedEntry._ID + " ASC", "1");
+		c.moveToFirst();
+		int val = c.getInt(0);
+		c.close();
+
+		return val;
 	}
 
-	public String[] getNameArray() {
-		String[] array = new String[ITEMS_NAME.size()];
+	public String[] getNameArray(Context context) {
+		SQLiteDatabase db = (new DatabaseHelper(context)).getReadableDatabase();
 
-		for (int i = 0; i < ITEMS_NAME.size(); i++) array[i] = ITEMS_NAME.get(i);
+		Cursor c = db.query(FeedEntry.TABLE_NAME, new String[]{FeedEntry.COLUMN_QUESTION},
+				null, null, null, null, FeedEntry._ID + " ASC");
 
+		String[] array = new String[c.getCount()];
+		c.moveToFirst();
+		int i = 0;
+		do array[i++] = c.getString(0);
+		while (c.moveToNext());
+		c.close();
 		return array;
 	}
 
-	List<String> getNameList() {
+	List<String> getNameList(Context context) {
 		ArrayList<String> array = new ArrayList<>();
 
-		for (int i = 0; i < ITEMS_NAME.size(); i++) {
-			array.add(ITEMS_NAME.get(i));
-		}
+		SQLiteDatabase db = (new DatabaseHelper(context)).getReadableDatabase();
+
+		Cursor c = db.query(FeedEntry.TABLE_NAME, new String[]{FeedEntry.COLUMN_QUESTION},
+				null, null, null, null, FeedEntry._ID + " ASC");
+		c.moveToFirst();
+
+		do array.add(c.getString(0));
+		while (c.moveToNext());
+		c.close();
 		return array;
 	}
 
-	void setVocabularyList(List<String> names, List<String> definitions) {
+	void setVocabularyList(Context context, List<String> names, List<String> definitions) {
 		if (names.size() != definitions.size())
 			throw new IndexOutOfBoundsException("Definitions array size must correspond to Names array");
-		ITEMS_NAME.clear();
-		ITEMS_DEFINITION.clear();
 
-		int i = 0;
+		DatabaseHelper helper = new DatabaseHelper(context);
+		SQLiteDatabase db = (helper).getWritableDatabase();
+		helper.onUpgrade(db, 1, 1);
+
 		for (String name : names) {
-			if(name != null) {
-				ITEMS_NAME.put(i, name);
-				ITEMS_DEFINITION.put(i++, definitions.get(names.indexOf(name)));
+			if (name != null) {
+				ContentValues values = new ContentValues();
+				values.put(FeedEntry.COLUMN_QUESTION, name);
+				values.put(FeedEntry.COLUMN_ANSWER, definitions.get(names.indexOf(name)));
+
+				db.insert(DatabaseContract.FeedEntry.TABLE_NAME, null, values);
 			}
 		}
-
 	}
 }

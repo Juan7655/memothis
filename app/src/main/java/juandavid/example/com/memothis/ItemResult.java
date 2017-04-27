@@ -4,7 +4,8 @@ package juandavid.example.com.memothis;
  * Created by juandavid on 22/04/17.
  */
 
-public class ItemResult{
+@SuppressWarnings("unused")
+class ItemResult{
 	private int idWord;
 	private boolean result;
 

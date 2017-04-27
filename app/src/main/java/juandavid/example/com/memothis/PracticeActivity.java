@@ -12,11 +12,10 @@ public class PracticeActivity extends AppCompatActivity implements WordListFragm
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_practice);
-
 	}
 
 	@Override
 	public void OnItemWordInteraction(int item) {
-		Toast.makeText(this, "Item click: " + ItemList.getInstance().getDefinition(item), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Item click: " + ItemList.getInstance().getDefinition(this, item), Toast.LENGTH_SHORT).show();
 	}
 }

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
 		attachFirebaseDatabase();
 		String msg = getIntent().getStringExtra(ITEM_VALUE);
-		final int itemId = msg == null ? -1 : Integer.parseInt(msg) % list.size();
+		final int itemId = msg == null ? -1 : Integer.parseInt(msg) % list.size(this);
 		setEnabled(itemId != -1, itemId);
 	}
 
@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity {
 		editText.setText(state ? "" : " ");
 
 		if (state) {
-			textView.setText(list.getName(itemId));
+			textView.setText(list.getName(this, itemId));
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					//Configuration of the Views
-					boolean result = list.isDefinition(itemId, editText.getText().toString());
+					boolean result = list.isDefinition(getBaseContext(), itemId, editText.getText().toString());
 					findViewById(R.id.image).setBackgroundResource(
 							result ? R.drawable.ic_check_black_24dp : R.drawable.ic_clear_black_24dp);
 					editText.setEnabled(false);
@@ -75,6 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private void attachFirebaseDatabase() {
 		DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("ItemList");
-		myRef.addValueEventListener(new MyValueEventListener());
+		myRef.addValueEventListener(new MyValueEventListener(this));
 	}
 }
