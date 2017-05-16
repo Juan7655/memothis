@@ -49,7 +49,7 @@ public class WordListFragment extends Fragment {
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-				mListener.OnItemWordInteraction(i);
+				mListener.OnItemWordInteraction(i + 1);
 			}
 		});
 

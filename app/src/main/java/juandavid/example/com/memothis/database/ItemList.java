@@ -27,7 +27,7 @@ public final class ItemList {
 	public String getName(Context context, int id) {
 		SQLiteDatabase db = (new DatabaseHelper(context)).getReadableDatabase();
 
-		Cursor c = db.query(FeedEntry.TABLE_NAME, new String[]{FeedEntry.COLUMN_ANSWER},
+		Cursor c = db.query(FeedEntry.TABLE_NAME, new String[]{FeedEntry.COLUMN_QUESTION},
 				FeedEntry._ID + " = " + id, null, null, null, FeedEntry._ID + " ASC", "1");
 		c.moveToFirst();
 		String val = c.getString(0);
@@ -50,19 +50,6 @@ public final class ItemList {
 
 	public boolean isDefinition(Context context, int id, String expected) {
 		return getDefinition(context, id).equals(expected);
-	}
-
-	public int size(Context context) {
-		SQLiteDatabase db = (new DatabaseHelper(context)).getReadableDatabase();
-
-		Cursor c = db.query(FeedEntry.TABLE_NAME,
-				new String[]{"COUNT(" + FeedEntry._ID + ")"},
-				null, null, null, null, FeedEntry._ID + " ASC", "1");
-		c.moveToFirst();
-		int val = c.getInt(0);
-		c.close();
-
-		return val;
 	}
 
 	public String[] getNameArray(Context context) {

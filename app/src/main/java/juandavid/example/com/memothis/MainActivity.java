@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Date;
 
@@ -42,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
 		button = (Button) findViewById(R.id.submit_button);
 		editText = (EditText) findViewById(R.id.edit_text);
 
-		attachFirebaseDatabase();
+		DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("ItemList");
+		myRef.addValueEventListener(new MyValueEventListener(this));
 		String msg = getIntent().getStringExtra(ITEM_VALUE);
-		final int itemId = msg == null ? -1 : Integer.parseInt(msg) % list.size(this);
+		final int itemId = msg == null ? -1 : Integer.parseInt(msg);
 		setEnabled(itemId != -1, itemId);
 	}
 
@@ -65,16 +67,13 @@ public class MainActivity extends AppCompatActivity {
 					editText.setEnabled(false);
 					button.setEnabled(false);
 
-					DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("User1");
-					CharSequence s  = DateFormat.format("d-MM-yy", new Date().getTime() + 1);
-					myRef.child(s.toString()).setValue(new ItemResult(itemId, result));
+					String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+					if(refreshedToken == null) refreshedToken = "UserNoName";
+					DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("UserData");
+					CharSequence s  = DateFormat.format("d-MM-yy HH:MM:ss", new Date().getTime() + 1);
+					myRef.child(refreshedToken).child(s.toString()).setValue(new ItemResult(itemId, result));
 				}
 			});
 		}
-	}
-
-	private void attachFirebaseDatabase() {
-		DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("ItemList");
-		myRef.addValueEventListener(new MyValueEventListener(this));
 	}
 }

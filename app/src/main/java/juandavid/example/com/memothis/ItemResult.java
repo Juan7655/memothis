@@ -1,13 +1,17 @@
 package juandavid.example.com.memothis;
 
+import android.support.annotation.Keep;
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * Created by juandavid on 22/04/17.
  */
-
 @SuppressWarnings("unused")
-class ItemResult{
-	private int idWord;
-	private boolean result;
+@Keep
+@IgnoreExtraProperties
+public class ItemResult{
+	public int idWord;
+	public boolean result;
 
 	ItemResult(int idWord, boolean result) {
 		this.idWord = idWord;
