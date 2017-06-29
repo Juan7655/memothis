@@ -6,7 +6,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 /**
  * Created by juandavid on 22/04/17.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 @Keep
 @IgnoreExtraProperties
 public class ItemResult{

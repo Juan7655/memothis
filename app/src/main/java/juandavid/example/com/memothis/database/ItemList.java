@@ -60,9 +60,11 @@ public final class ItemList {
 
 		String[] array = new String[c.getCount()];
 		c.moveToFirst();
+
 		int i = 0;
 		do array[i++] = c.getString(0);
 		while (c.moveToNext());
+
 		c.close();
 		return array;
 	}

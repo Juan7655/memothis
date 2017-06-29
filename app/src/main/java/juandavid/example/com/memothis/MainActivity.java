@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 	private TextView textView;
 	private Button button;
 	private EditText editText;
-	private ItemList list = ItemList.getInstance();
+	private final ItemList list = ItemList.getInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 		setEnabled(itemId != -1, itemId);
 	}
 
-	public void setEnabled(boolean state, final int itemId) {
+	private void setEnabled(boolean state, final int itemId) {
 		editText.setEnabled(state);
 		button.setEnabled(state);
 		editText.setText(state ? "" : " ");
